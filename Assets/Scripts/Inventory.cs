@@ -11,7 +11,7 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         GetReferences();
-        InitVariables();
+        //InitVariables();
     }
 
 
