@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WeaponShooting : MonoBehaviour
 {
+    private float lastShootTime;
+
     private Camera cam;
     private Inventory inventory;
 
@@ -14,23 +16,35 @@ public class WeaponShooting : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if(Input.GetKey(KeyCode.Mouse0))
         {
             Shoot();
         }
     }
 
-    private void Shoot()
+    private void RaycastShoot(Weapon currentWeapon)
     {
         Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
         RaycastHit hit;
 
-        float tcurrentWeaponRange = inventory.GetItem(0).range;
+        float tcurrentWeaponRange = currentWeapon.range;
 
         if(Physics.Raycast(ray, out hit, tcurrentWeaponRange))
         {
             Debug.Log(hit.transform.name);
-            Debug.Log(tcurrentWeaponRange);
+        }
+    }
+
+    private void Shoot()
+    {
+        Weapon currentWeapon = inventory.GetItem(0);
+
+        if(Time.time > lastShootTime + currentWeapon.fireRate)
+        {
+            Debug.Log("Shoot");
+            lastShootTime = Time.time;
+
+            RaycastShoot(currentWeapon);
         }
     }
 
