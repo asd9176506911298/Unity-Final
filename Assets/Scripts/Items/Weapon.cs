@@ -10,7 +10,9 @@ public class Weapon : Item
     public int magazineCount;
     public float range;
     public WeaponType weaponType;
+    public WeaponStyle weaponStyle;
     
 }
 
 public enum WeaponType { Pistol, Melee };
+public enum WeaponStyle { Primary };
