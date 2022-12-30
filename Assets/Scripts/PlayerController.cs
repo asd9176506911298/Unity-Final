@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool isCharacterGround = false;
     private Vector3 velocity = Vector3.zero;
 
+    private Animator anim;
+
     private void Start()
     {
         GetReferences();
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour
 
         HandleRunning();
         HandleMovement();
+        HandleAnimations();
     }
 
     private void HandleMovement()
@@ -60,6 +63,22 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             moveSpeed = walkSpeed;
+        }
+    }
+
+    private void HandleAnimations()
+    {
+        if(moveDirection == Vector3.zero)
+        {
+            anim.SetFloat("Speed", 0f, 0.2f, Time.deltaTime);
+        }
+        else if(moveDirection != Vector3.zero && !Input.GetKey(KeyCode.LeftShift))
+        {
+            anim.SetFloat("Speed", 0.5f, 0.2f, Time.deltaTime);
+        }
+        else if(moveDirection != Vector3.zero && Input.GetKey(KeyCode.LeftShift))
+        {
+            anim.SetFloat("Speed", 1f, 0.2f, Time.deltaTime);
         }
     }
 
@@ -90,6 +109,7 @@ public class PlayerController : MonoBehaviour
     private void GetReferences()
     {
         controller = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     private void InitVariables()
