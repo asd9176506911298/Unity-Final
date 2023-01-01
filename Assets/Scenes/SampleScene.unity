@@ -311,7 +311,8 @@ MonoBehaviour:
   - {fileID: 888879411}
   - {fileID: 1765717915}
   - {fileID: 1114468393}
-  target: {fileID: 8708523512825725201, guid: 656e3fd6e5c50104a91729d662375104, type: 3}
+  target: {fileID: 7315679274217441651, guid: 656e3fd6e5c50104a91729d662375104, type: 3}
+  enemyList: []
 --- !u!1 &580912048
 GameObject:
   m_ObjectHideFlags: 0
