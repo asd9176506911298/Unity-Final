@@ -19,6 +19,7 @@ public class WeaponShooting : MonoBehaviour
 
     private Camera cam;
     private Inventory inventory;
+    private PlayerHUD hud;
 
     private void Start()
     {
@@ -98,7 +99,15 @@ public class WeaponShooting : MonoBehaviour
         { 
             primaryCurrentAmmo -= currentAmmoUsed;
             primaryCurrentAmmoStorage -= currentAmmoStoredUsed;
+            hud.UpdateWeaponAmmoUI(primaryCurrentAmmo, primaryCurrentAmmoStorage);
         }
+    }
+
+    private void AddAmmo(int currentAmmoAdded, int currentAmmoStoredAdded)
+    {
+        primaryCurrentAmmo += currentAmmoAdded;
+        primaryCurrentAmmoStorage += currentAmmoStoredAdded;
+        hud.UpdateWeaponAmmoUI(currentAmmoAdded, currentAmmoStoredAdded);
     }
 
     private void Reload()
@@ -117,19 +126,19 @@ public class WeaponShooting : MonoBehaviour
                     return;
                 }
 
-                primaryCurrentAmmo += ammoToReload;
-                primaryCurrentAmmoStorage -= ammoToReload;
+                AddAmmo(ammoToReload, 0);
+                UseAmmo(0, ammoToReload);
 
                 primaryMagazingIsEmpty = false;
                 CheckCanShoot();
             }
-            else if(primaryCurrentAmmoStorage < ammoToReload)
+            else if (ammoToReload > 0 && primaryCurrentAmmoStorage > 0)
             {
-                primaryCurrentAmmo += primaryCurrentAmmoStorage;
-                primaryCurrentAmmoStorage -= primaryCurrentAmmoStorage;
-                
+                AddAmmo(primaryCurrentAmmoStorage, 0);
+                UseAmmo(0, primaryCurrentAmmoStorage);
+
             }
-                Debug.Log("Not enought ammo to reload");
+            Debug.Log("Not enought ammo to reload");
         }
         else
             Debug.Log("Can't reload time");
@@ -145,16 +154,19 @@ public class WeaponShooting : MonoBehaviour
             canShoot = true;
     }
 
-    private void GetReferences()
-    {
-        cam = GetComponentInChildren<Camera>();
-        inventory = GetComponent<Inventory>();
-    }
+  
 
     private void InitAmmo()
     {
         primaryCurrentAmmo = inventory.weapons[0].magazineSize;
         primaryCurrentAmmoStorage = inventory.weapons[0].storedAmmo;
 
+    }
+
+    private void GetReferences()
+    {
+        cam = GetComponentInChildren<Camera>();
+        inventory = GetComponent<Inventory>();
+        hud = GetComponent<PlayerHUD>();
     }
 }

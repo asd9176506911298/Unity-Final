@@ -20,7 +20,7 @@ MonoBehaviour:
     type: 3}
   magazineSize: 12
   storedAmmo: 72
-  fireRate: 0.01
+  fireRate: 0.1
   range: 75
   weaponType: 0
   weaponStyle: 0
