@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class WeaponShooting : MonoBehaviour
 {
-    private float lastShootTime;
+    private float lastShootTime = 0;
+
+    [SerializeField] private bool canShoot;
+
+    [SerializeField] private int primaryCurrentAmmo;
+    [SerializeField] private int primaryCurrentAmmoStorage;
+
+    [SerializeField] private bool primaryMagazingIsEmpty = false;
+
     public GameObject currentWeaponObject;
     private Transform currentWeaponBarrel;
 
@@ -15,11 +23,12 @@ public class WeaponShooting : MonoBehaviour
     {
         GetReferences();
         GetWeaponBarrel();
+        InitAmmo();
     }
 
     private void Update()
     {
-        if(Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKey(KeyCode.Mouse0))
         {
             Shoot();
         }
@@ -37,7 +46,7 @@ public class WeaponShooting : MonoBehaviour
 
         float tcurrentWeaponRange = currentWeapon.range;
 
-        if(Physics.Raycast(ray, out hit, tcurrentWeaponRange))
+        if (Physics.Raycast(ray, out hit, tcurrentWeaponRange))
         {
             Debug.Log(hit.transform.name);
         }
@@ -46,20 +55,62 @@ public class WeaponShooting : MonoBehaviour
 
     private void Shoot()
     {
-        Weapon currentWeapon = inventory.GetItem(0);
+        CheckCanShoot();
 
-        if(Time.time > lastShootTime + currentWeapon.fireRate)
+        if(canShoot)
         {
-            Debug.Log("Shoot");
-            lastShootTime = Time.time;
+            Weapon currentWeapon = inventory.GetItem(0);
 
-            RaycastShoot(currentWeapon);
+            if (Time.time > lastShootTime + currentWeapon.fireRate)
+            {
+                Debug.Log("Shoot");
+                lastShootTime = Time.time;
+
+                RaycastShoot(currentWeapon);
+                UseAmmo(1, 0);
+            }
+
         }
+        else
+        {
+            Debug.Log("Not enough ammo");
+        }
+
+
+    }
+
+    private void UseAmmo(int currentAmmoUsed, int currentAmmoStoredUsed)
+    {
+        if (primaryCurrentAmmo <= 0)
+        {
+            primaryMagazingIsEmpty = true;
+            CheckCanShoot();
+        }
+        else
+        { 
+            primaryCurrentAmmo -= currentAmmoUsed;
+            primaryCurrentAmmoStorage -= currentAmmoStoredUsed;
+        }
+    }
+
+    private void CheckCanShoot()
+    {
+        if (primaryMagazingIsEmpty)
+            canShoot = false;
+        else
+            canShoot = true;
     }
 
     private void GetReferences()
     {
         cam = GetComponentInChildren<Camera>();
         inventory = GetComponent<Inventory>();
+    }
+
+    private void InitAmmo()
+    {
+        primaryCurrentAmmo = inventory.weapons[0].magazineSize;
+        primaryCurrentAmmoStorage = inventory.weapons[0].storedAmmo;
+
     }
 }

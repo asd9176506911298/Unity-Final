@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private Weapon[] weapons;
+    [SerializeField] public Weapon[] weapons;
+
+    private WeaponShooting shooting;
 
     private PlayerHUD hud;
 
@@ -45,5 +47,6 @@ public class Inventory : MonoBehaviour
     private void GetReferences()
     {
         hud = GetComponent<PlayerHUD>();
+        shooting = GetComponent<WeaponShooting>();
     }
 }

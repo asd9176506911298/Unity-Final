@@ -19,8 +19,8 @@ MonoBehaviour:
   muzzleFlashParticles: {fileID: 8313476324010513018, guid: 6d168bdcc310e8c4f8e3fa27a8acf8bd,
     type: 3}
   magazineSize: 12
-  magazineCount: 4
-  fireRate: 0.5
+  storedAmmo: 72
+  fireRate: 0.2
   range: 75
   weaponType: 0
   weaponStyle: 0
