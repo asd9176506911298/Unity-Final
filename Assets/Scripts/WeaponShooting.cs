@@ -5,6 +5,8 @@ using UnityEngine;
 public class WeaponShooting : MonoBehaviour
 {
     private float lastShootTime;
+    public GameObject currentWeaponObject;
+    private Transform currentWeaponBarrel;
 
     private Camera cam;
     private Inventory inventory;
@@ -12,6 +14,7 @@ public class WeaponShooting : MonoBehaviour
     private void Start()
     {
         GetReferences();
+        GetWeaponBarrel();
     }
 
     private void Update()
@@ -20,6 +23,11 @@ public class WeaponShooting : MonoBehaviour
         {
             Shoot();
         }
+    }
+
+    private void GetWeaponBarrel()
+    {
+        currentWeaponBarrel = currentWeaponObject.transform.GetChild(0);
     }
 
     private void RaycastShoot(Weapon currentWeapon)
@@ -33,6 +41,7 @@ public class WeaponShooting : MonoBehaviour
         {
             Debug.Log(hit.transform.name);
         }
+        Instantiate(currentWeapon.muzzleFlashParticles, currentWeaponBarrel);
     }
 
     private void Shoot()
