@@ -7,7 +7,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private Transform[] spawners;
 
     [SerializeField] private GameObject target;
-    [SerializeField] private List<EnemyStats> enemyList;
+    [SerializeField] public List<EnemyStats> enemyList;
     
     void Update()
     {
@@ -17,6 +17,7 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnTarget();
         }
+
     }
 
     public void SpawnTarget()
@@ -32,16 +33,20 @@ public class EnemySpawner : MonoBehaviour
 
     public bool EnemiesAreDead()
     {
-        int i = 0;
 
-        foreach(CharacterStats enemy in enemyList)
+        for(int i = 0; i < enemyList.Count; i++)
         {
-            if (enemy.IsDead())
-                i++;
-            else return false;
+            if (enemyList[i].IsDead())
+            {
+                Debug.Log(enemyList[i].IsDead());
+                enemyList.RemoveAt(i);  
+            }
+            else
+                return false;
         }
 
         return true;
     }
     
+
 }
