@@ -7,6 +7,7 @@ public class WeaponShooting : MonoBehaviour
     private float lastShootTime = 0;
 
     [SerializeField] private bool canShoot;
+    [SerializeField] private bool canReload;
 
     [SerializeField] private int primaryCurrentAmmo;
     [SerializeField] private int primaryCurrentAmmoStorage;
@@ -24,6 +25,8 @@ public class WeaponShooting : MonoBehaviour
         GetReferences();
         GetWeaponBarrel();
         InitAmmo();
+        canShoot = true;
+        canReload = true;
     }
 
     private void Update()
@@ -31,6 +34,11 @@ public class WeaponShooting : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse0))
         {
             Shoot();
+        }
+
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
         }
     }
 
@@ -57,7 +65,7 @@ public class WeaponShooting : MonoBehaviour
     {
         CheckCanShoot();
 
-        if(canShoot)
+        if(canShoot && canReload)
         {
             Weapon currentWeapon = inventory.GetItem(0);
 
@@ -91,6 +99,42 @@ public class WeaponShooting : MonoBehaviour
             primaryCurrentAmmo -= currentAmmoUsed;
             primaryCurrentAmmoStorage -= currentAmmoStoredUsed;
         }
+    }
+
+    private void Reload()
+    {
+        if (canReload)
+        {
+            int ammoToReload = inventory.GetItem(0).magazineSize - primaryCurrentAmmo;
+
+            if (primaryCurrentAmmoStorage >= ammoToReload)
+            {
+
+
+                if (primaryCurrentAmmo == inventory.GetItem(0).magazineSize)
+                {
+                    Debug.Log("ammo is Full");
+                    return;
+                }
+
+                primaryCurrentAmmo += ammoToReload;
+                primaryCurrentAmmoStorage -= ammoToReload;
+
+                primaryMagazingIsEmpty = false;
+                CheckCanShoot();
+            }
+            else if(primaryCurrentAmmoStorage < ammoToReload)
+            {
+                primaryCurrentAmmo += primaryCurrentAmmoStorage;
+                primaryCurrentAmmoStorage -= primaryCurrentAmmoStorage;
+                
+            }
+                Debug.Log("Not enought ammo to reload");
+        }
+        else
+            Debug.Log("Can't reload time");
+        
+        
     }
 
     private void CheckCanShoot()
