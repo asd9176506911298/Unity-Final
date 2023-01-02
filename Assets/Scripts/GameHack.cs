@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameHack : MonoBehaviour
 {
@@ -11,18 +12,87 @@ public class GameHack : MonoBehaviour
     private SphereCollider targetCollider;
     [SerializeField] private Transform arms;
     [SerializeField] private Transform body;
+    [SerializeField] private WeaponShooting weaponShooting;
+    [SerializeField] Text ESPText;
+    [SerializeField] Text TriggerBotText;
+    [SerializeField] Text AimbotText;
+
+    private bool Aimbot;
+    private bool ESP;
+    private bool TriggerBot;
 
     private void Start()
     {
+        InitVariable();
         GetReferences();
         CreateLineMaterial();
+    }
+    private void InitVariable()
+    {
+        Aimbot = false;
+        ESP = false;
+        TriggerBot = false;
     }
 
     private void Update()
     {
-        cam.transform.LookAt(target);
-        body.transform.LookAt(target);
         UpdateEnemyObject();
+
+        CheckCheatIsEnable();
+
+        UpdateCheatText();
+
+
+    }
+
+    private void CheckCheatIsEnable()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
+            ESP = !ESP;
+        if (Input.GetKeyDown(KeyCode.F2))
+            TriggerBot = !TriggerBot;
+        if (Input.GetKeyDown(KeyCode.F3))
+            Aimbot = !Aimbot;
+
+        if (Aimbot)
+        {
+            BodyDirection();
+        }
+
+        if (TriggerBot)
+            CheckTriggerBot();
+    }
+    private void UpdateCheatText()
+    {
+        ESPText.text = "F1 ESP: " + ESP.ToString();
+        TriggerBotText.text = "F2 TriggerBot: " + TriggerBot.ToString();
+        AimbotText.text = "F3 Aimbot: " + Aimbot.ToString();
+    }
+
+    private void CheckTriggerBot()
+    {
+        Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            weaponShooting.Shoot();
+            Debug.Log("ok");
+        }
+    }
+
+    private void BodyDirection()
+    {
+        cam.transform.LookAt(target);
+
+        Vector3 pitch = target.position - body.position;
+        Vector3 yaw = target.position - body.position;
+        pitch.x = 0;
+        yaw.y = 0;
+        var pitchRotation = Quaternion.LookRotation(pitch);
+        var yawRotation = Quaternion.LookRotation(yaw);
+        //arms.rotation = Quaternion.Slerp(arms.rotation, pitchRotation, 1f);
+        body.rotation = Quaternion.Slerp(body.rotation, yawRotation, 1f);
     }
 
     private void UpdateEnemyObject()
@@ -72,8 +142,11 @@ public class GameHack : MonoBehaviour
             Vector3 entHeadPos2D = cam.WorldToViewportPoint(target.position + vecRadius);
             if (entPos.z > 0)
             { 
-                DrawLine(new Vector2(0.5f, 0f), entPos);
-                DrawRect(entHeadPos2D, entPos2D);
+                if(ESP)
+                { 
+                    DrawLine(new Vector2(0.5f, 0f), entPos);
+                    DrawRect(entHeadPos2D, entPos2D);
+                }
             }
             
             GL.PopMatrix();
@@ -125,5 +198,6 @@ public class GameHack : MonoBehaviour
     private void GetReferences()
     {
         cam = GetComponentInChildren<Camera>();
+        weaponShooting = GetComponent<WeaponShooting>();
     }
 }

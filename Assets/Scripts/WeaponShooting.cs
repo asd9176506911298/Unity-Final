@@ -41,6 +41,8 @@ public class WeaponShooting : MonoBehaviour
         {
             Reload();
         }
+
+        Debug.DrawRay(cam.transform.position, cam.transform.TransformDirection(Vector3.forward * 100), Color.red);
     }
 
     private void GetWeaponBarrel()
@@ -55,21 +57,23 @@ public class WeaponShooting : MonoBehaviour
         
         float tcurrentWeaponRange = currentWeapon.range;
 
-        if (Physics.Raycast(ray, out hit, 99999))
+        if (Physics.Raycast(ray, out hit))
         {
+            Debug.Log(hit.transform.name);
             if (hit.transform.tag == "Ball")
             {
+                
                 EnemyStats enemyStats = hit.transform.GetComponent<EnemyStats>();
                 enemyStats.Die();
             
                 
-                Debug.Log(hit.transform.name);
+                
             }
         }
         Instantiate(currentWeapon.muzzleFlashParticles, currentWeaponBarrel);
     }
 
-    private void Shoot()
+    public void Shoot()
     {
         CheckCanShoot();
 

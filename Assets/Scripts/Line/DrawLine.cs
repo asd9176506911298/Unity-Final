@@ -30,7 +30,7 @@ public class DrawLine : MonoBehaviour
             lineMaterial.SetInt("_ZWrite", 0);
         }
     }
-
+    
     
 
     // cannot call this on update, line not visible then.. and OnPostRender() works on camera only

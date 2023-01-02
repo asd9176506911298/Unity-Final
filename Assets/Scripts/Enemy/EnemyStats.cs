@@ -10,5 +10,6 @@ public class EnemyStats : CharacterStats
         base.Die();
         Destroy(gameObject);
     }
-    
+
+
 }

@@ -40,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (enemyList[i].IsDead())
             {
-                Debug.Log(enemyList[i].IsDead());
+                //Debug.Log(enemyList[i].IsDead());
                 enemyList.RemoveAt(i);
             }
             else
