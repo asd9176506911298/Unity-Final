@@ -9,8 +9,8 @@ public class DrawLine : MonoBehaviour
     Color lineColor = Color.red;
     float distance = 100;
     Material lineMaterial;
-    public Transform obj1;
-    public Transform obj2;
+    public Transform obj;
+
 
     void CreateLineMaterial()
     {
@@ -31,19 +31,22 @@ public class DrawLine : MonoBehaviour
         }
     }
 
+    
 
     // cannot call this on update, line not visible then.. and OnPostRender() works on camera only
     void OnRenderObject()
     {
         CreateLineMaterial();
-        lineMaterial.SetPass(0);
         GL.PushMatrix();
-        GL.MultMatrix(transform.localToWorldMatrix); // not needed if already in worldspace
+        lineMaterial.SetPass(0);
+        GL.LoadOrtho();
+
         GL.Begin(GL.LINES);
-        GL.Color(lineColor);
-        GL.Vertex(obj1.position);
-        GL.Vertex(obj2.position);
+        GL.Color(Color.red);
+        GL.Vertex3(gameObject.GetComponent<Camera>().WorldToViewportPoint(obj.position).x, gameObject.GetComponent<Camera>().WorldToViewportPoint(obj.position).y, 0f);
+        GL.Vertex3(0.5f, 0f, 0f);
         GL.End();
+
         GL.PopMatrix();
     }
 }
