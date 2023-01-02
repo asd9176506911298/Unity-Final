@@ -9,6 +9,8 @@ public class GameHack : MonoBehaviour
     Material lineMaterial;
     private Transform target;
     private SphereCollider targetCollider;
+    [SerializeField] private Transform arms;
+    [SerializeField] private Transform body;
 
     private void Start()
     {
@@ -17,6 +19,13 @@ public class GameHack : MonoBehaviour
     }
 
     private void Update()
+    {
+        cam.transform.LookAt(target);
+        body.transform.LookAt(target);
+        UpdateEnemyObject();
+    }
+
+    private void UpdateEnemyObject()
     {
         for (int i = 0; i < enemySpawner.enemyList.Count; i++)
         {

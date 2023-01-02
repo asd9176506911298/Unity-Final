@@ -8,6 +8,7 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private GameObject target;
     [SerializeField] public List<EnemyStats> enemyList;
+    private bool isSpawn = false;
     
     void Update()
     {
@@ -20,12 +21,13 @@ public class EnemySpawner : MonoBehaviour
 
     }
 
+
     public void SpawnTarget()
     {
         int randomInt = Random.Range(1, spawners.Length);
         Transform randomSpawner = spawners[randomInt];
-
-        GameObject newEnemy = Instantiate(target, randomSpawner.position, randomSpawner.rotation);
+        Vector3 RandomPos = new Vector3(Random.Range(-5, 5), Random.Range(0, 5), Random.Range(-5, 5));
+        GameObject newEnemy = Instantiate(target, randomSpawner.position + RandomPos, randomSpawner.rotation);
         EnemyStats newEnemyStats = newEnemy.GetComponent<EnemyStats>();
 
         enemyList.Add(newEnemyStats);
@@ -39,7 +41,7 @@ public class EnemySpawner : MonoBehaviour
             if (enemyList[i].IsDead())
             {
                 Debug.Log(enemyList[i].IsDead());
-                enemyList.RemoveAt(i);  
+                enemyList.RemoveAt(i);
             }
             else
                 return false;

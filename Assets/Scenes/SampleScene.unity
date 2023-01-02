@@ -650,6 +650,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpawner: {fileID: 543545189}
+  arms: {fileID: 504508681}
+  body: {fileID: 792983887}
 --- !u!1 &888879410
 GameObject:
   m_ObjectHideFlags: 0

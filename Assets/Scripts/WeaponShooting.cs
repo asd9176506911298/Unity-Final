@@ -52,10 +52,10 @@ public class WeaponShooting : MonoBehaviour
     {
         Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
         RaycastHit hit;
-
+        
         float tcurrentWeaponRange = currentWeapon.range;
 
-        if (Physics.Raycast(ray, out hit, tcurrentWeaponRange))
+        if (Physics.Raycast(ray, out hit, 99999))
         {
             if (hit.transform.tag == "Ball")
             {
@@ -83,7 +83,7 @@ public class WeaponShooting : MonoBehaviour
                 lastShootTime = Time.time;
 
                 RaycastShoot(currentWeapon);
-                UseAmmo(1, 0);
+                //UseAmmo(1, 0);
             }
 
         }
