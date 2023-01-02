@@ -17,7 +17,7 @@ public class GameHack : MonoBehaviour
     [SerializeField] Text TriggerBotText;
     [SerializeField] Text AimbotText;
     [SerializeField] Text AmmoTextInfiniteAmmoText;
-    private PlayerHUD plalyerHUD;
+    private PlayerHUD playerHUD;
 
     private bool Aimbot;
     private bool ESP;
@@ -29,6 +29,7 @@ public class GameHack : MonoBehaviour
         InitVariable();
         GetReferences();
         CreateLineMaterial();
+        playerHUD.UpdateWeaponAmmoUI(weaponShooting.primaryCurrentAmmo, weaponShooting.primaryCurrentAmmoStorage);
     }
     private void InitVariable()
     {
@@ -70,7 +71,7 @@ public class GameHack : MonoBehaviour
         { 
             weaponShooting.primaryCurrentAmmo = 12;
             weaponShooting.primaryCurrentAmmoStorage = 1337;
-            plalyerHUD.UpdateWeaponAmmoUI(weaponShooting.primaryCurrentAmmo, weaponShooting.primaryCurrentAmmoStorage);
+            playerHUD.UpdateWeaponAmmoUI(weaponShooting.primaryCurrentAmmo, weaponShooting.primaryCurrentAmmoStorage);
         }
 
     }
@@ -211,6 +212,6 @@ public class GameHack : MonoBehaviour
     {
         cam = GetComponentInChildren<Camera>();
         weaponShooting = GetComponent<WeaponShooting>();
-        plalyerHUD = GetComponent<PlayerHUD>();
+        playerHUD = GetComponent<PlayerHUD>();
     }
 }
