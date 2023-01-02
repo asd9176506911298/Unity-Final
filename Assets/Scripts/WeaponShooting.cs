@@ -9,8 +9,8 @@ public class WeaponShooting : MonoBehaviour
     [SerializeField] private bool canShoot;
     [SerializeField] private bool canReload;
 
-    [SerializeField] private int primaryCurrentAmmo;
-    [SerializeField] private int primaryCurrentAmmoStorage;
+    [SerializeField] public int primaryCurrentAmmo;
+    [SerializeField] public int primaryCurrentAmmoStorage;
 
     [SerializeField] private bool primaryMagazingIsEmpty = false;
 
@@ -87,7 +87,7 @@ public class WeaponShooting : MonoBehaviour
                 lastShootTime = Time.time;
 
                 RaycastShoot(currentWeapon);
-                //UseAmmo(1, 0);
+                UseAmmo(1, 0);
             }
 
         }

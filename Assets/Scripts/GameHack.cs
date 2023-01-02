@@ -16,10 +16,13 @@ public class GameHack : MonoBehaviour
     [SerializeField] Text ESPText;
     [SerializeField] Text TriggerBotText;
     [SerializeField] Text AimbotText;
+    [SerializeField] Text AmmoTextInfiniteAmmoText;
+    private PlayerHUD plalyerHUD;
 
     private bool Aimbot;
     private bool ESP;
     private bool TriggerBot;
+    private bool Ammo;
 
     private void Start()
     {
@@ -53,6 +56,8 @@ public class GameHack : MonoBehaviour
             TriggerBot = !TriggerBot;
         if (Input.GetKeyDown(KeyCode.F3))
             Aimbot = !Aimbot;
+        if (Input.GetKeyDown(KeyCode.F4))
+            Ammo = !Ammo;
 
         if (Aimbot)
         {
@@ -61,6 +66,13 @@ public class GameHack : MonoBehaviour
 
         if (TriggerBot)
             CheckTriggerBot();
+        if (Ammo)
+        { 
+            weaponShooting.primaryCurrentAmmo = 12;
+            weaponShooting.primaryCurrentAmmoStorage = 1337;
+            plalyerHUD.UpdateWeaponAmmoUI(weaponShooting.primaryCurrentAmmo, weaponShooting.primaryCurrentAmmoStorage);
+        }
+
     }
     private void UpdateCheatText()
     {
@@ -199,5 +211,6 @@ public class GameHack : MonoBehaviour
     {
         cam = GetComponentInChildren<Camera>();
         weaponShooting = GetComponent<WeaponShooting>();
+        plalyerHUD = GetComponent<PlayerHUD>();
     }
 }
