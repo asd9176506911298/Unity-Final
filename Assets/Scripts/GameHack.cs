@@ -80,6 +80,7 @@ public class GameHack : MonoBehaviour
         ESPText.text = "F1 ESP: " + ESP.ToString();
         TriggerBotText.text = "F2 TriggerBot: " + TriggerBot.ToString();
         AimbotText.text = "F3 Aimbot: " + Aimbot.ToString();
+        AmmoTextInfiniteAmmoText.text = "F4 Infinite Ammo: " + Ammo.ToString();
     }
 
     private void CheckTriggerBot()
